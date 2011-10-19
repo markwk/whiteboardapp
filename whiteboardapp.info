@@ -1,0 +1,5 @@
+name = Whiteboard App
+description = Whiteboard App with Raphael backend
+core = 7.x
+configure = admin/config/media/whiteboardapp
+files[] = whiteboardapp.module

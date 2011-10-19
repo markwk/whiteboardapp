@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head><title>Whiteboard app</title>
+		<link rel="stylesheet" type="text/css" href="css/reset.css"/>
+		<link rel="stylesheet" type="text/css" href="css/main.css"/>
+		<script language="JavaScript" type="text/javascript" src="raphael-min.js"></script>
+	</head>
+	<body>
+		<script language="JavaScript">
+			function removed() {
+				return null;
+			}
+			
+			var width = 800;
+			var height = 600;
+			
+			var path = null;
+			var prevX = null;
+			var prevY = null;
+			var paper2 = null;
+			
+			var paper = Raphael(0, 0, width, height);
+			
+			var rect = paper.rect(0, 0, width, height);
+			rect.attr({
+				fill: "#fff",
+				stroke: "#000"
+			});
+			
+			var move = function(dx, dy, x, y) {
+				if (prevX && prevY) {
+					var pathString = Raphael.fullfill("M{prevX},{prevY}L{x},{y}", {
+						prevX: prevX,
+						prevY: prevY,
+						x: x,
+						y: y
+					});
+					paper2.path(pathString);
+					console.log(pathString);
+					path += pathString;
+				}
+				prevX = x;
+				prevY = y;
+			},
+			start = function() {
+				path = null;
+				prevX = null;
+				prevY = null;
+				paper2 = Raphael(0, 0, width, height);
+			},
+			up = function() {
+				var a = paper2.raphael.path2curve(path);
+				paper2.remove();
+				paper2 = null;
+				paper.path(a);
+				console.log(a);
+			};
+			
+			rect.drag(move, start, up);
+		</script>
+	</body>
+</html>

@@ -1,0 +1,49 @@
+<?php
+/**
+ * @file
+ * Enable Raphael.JS Powered Whiteboard in Drupal 7
+ */
+
+/**
+ * Menu
+ */
+function whiteboardapp_menu() {
+  $items = array();
+
+  $items['admin/config/media/whiteboardapp'] = array(
+    'title' => 'OpenTok',
+    'description' => 'Configuration for the OpenTok module.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('whiteboardapp_config_form'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+$items['whiteboardapp'] = array(
+  'title' => 'Raphael Pad',
+  'description' => 'Test Whiteboard App.',
+  'page callback' => 'whiteboardapp_page',
+  'access callback' => TRUE,
+);
+
+  return $items;
+}
+
+/**
+ * Page callback for Whiteboard Page
+ */
+function whiteboardapp_page() {
+  global $user;
+  $page = array();
+  $page['whiteboardapp'] = array(
+    '#type' => 'markup',
+    '#markup' => '<div id="nodejs-tic-wrapper"><script language="JavaScript">function removed(){return null}var width=800;var height=600;var path=null;var prevX=null;var prevY=null;var paper2=null;var paper=Raphael(0,0,width,height);var rect=paper.rect(0,0,width,height);rect.attr({fill:"#fff",stroke:"#000"});var move=function(dx,dy,x,y){if(prevX&&prevY){var pathString=Raphael.fullfill("M{prevX},{prevY}L{x},{y}",{prevX:prevX,prevY:prevY,x:x,y:y});paper2.path(pathString);console.log(pathString);path+=pathString}prevX=x;prevY=y},start=function(){path=null;prevX=null;prevY=null;paper2=Raphael(0,0,width,height)},up=function(){var a=paper2.raphael.path2curve(path);paper2.remove();paper2=null;paper.path(a);console.log(a)};rect.drag(move,start,up);</script></div>',
+  );
+  $path = drupal_get_path('module', 'whiteboardapp');
+  drupal_add_js($path . '/js/raphael-min.js');
+  return $page;
+}
+
+/**
+ * Page callback for Whiteboard Page
+ */
